@@ -357,7 +357,7 @@ def manage(command):
     """
     Runs a Django management command.
     """
-    return run("%s %s" % (env.manage, command))
+    return run("%s %s --settings=settings%s" % (env.manage, command, env.settings_env))
 
 
 #########################

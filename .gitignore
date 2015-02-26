@@ -1,9 +1,13 @@
 *.pyc
 *.pyo
 *.db
+*.pid
+*.tar
+*.log
 .DS_Store
 .coverage
 /static
 prod.py
-
+local_settings.py
+gunicorn.conf.py
 .idea/
