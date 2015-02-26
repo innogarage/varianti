@@ -360,7 +360,7 @@ AUTO_TAG = True
 # ignored in your version control system allowing for settings to be
 # defined per machine.
 try:
-    from local_settings import *
+    from settings.local_settings import *
 except ImportError:
     pass
 
