@@ -7,9 +7,6 @@ SECRET_KEY = "$g962jf5ih49wt03*#opp(k)c2gn0*lqy$ri_c(wkf83)qa#m!"
 NEVERCACHE_KEY = "$$w0u2@z64=1n94q4$#14w*7wf1bzhgg!#d816aux0vu(fonmz"
 
 
-TIME_ZONE = 'Europe/Chisinau'
-
-
 DATABASES = {
     "default": {
         # Ends with "postgresql_psycopg2", "mysql", "sqlite3" or "oracle".

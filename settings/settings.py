@@ -102,7 +102,7 @@ ALLOWED_HOSTS = []
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = None
+TIME_ZONE = 'Europe/Chisinau'
 
 # If you set this to True, Django will use timezone-aware datetimes.
 USE_TZ = True
@@ -319,6 +319,11 @@ RATINGS_ACCOUNT_REQUIRED = True
 COMMENTS_ACCOUNT_REQUIRED = True
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 SEARCH_MODEL_CHOICES = ("links.Link",)
+
+ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
+    "first_name",
+    "last_name",
+)
 
 # Drum settings
 ALLOWED_DUPLICATE_LINK_HOURS = 24 * 7 * 3

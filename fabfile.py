@@ -405,12 +405,8 @@ def create():
                 return False
             remove()
         run("virtualenv %s --distribute" % env.proj_name)
-        #vcs = "git" if env.git else "hg"
-        #run("%s clone %s %s" % (vcs, env.repo_url, env.proj_path))
-
-    #
-
-    execute(copy_project)
+        vcs = "git" if env.git else "hg"
+        run("%s clone %s %s" % (vcs, env.repo_url, env.proj_path))
 
     # Create DB and DB user.
     pw = db_pass()
@@ -526,8 +522,6 @@ def deploy():
             return False
         create()
 
-    execute(copy_project)
-
     for name in get_templates():
         upload_template_and_reload(name)
     with project():
@@ -535,11 +529,11 @@ def deploy():
         static_dir = static()
         if exists(static_dir):
             run("tar -cf last.tar %s" % static_dir)
-        #git = env.git
-        #last_commit = "git rev-parse HEAD" if git else "hg id -i"
-        #run("%s > last.commit" % last_commit)
-        #with update_changed_requirements():
-        #    run("git pull origin master -f" if git else "hg pull && hg up -C")
+        git = env.git
+        last_commit = "git rev-parse HEAD" if git else "hg id -i"
+        run("%s > last.commit" % last_commit)
+        with update_changed_requirements():
+           run("git pull origin master -f" if git else "hg pull && hg up -C")
         manage("collectstatic -v 0 --noinput")
         manage("syncdb --noinput")
         manage("migrate --noinput")
