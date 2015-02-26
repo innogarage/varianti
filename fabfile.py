@@ -68,6 +68,8 @@ env.locale = conf.get("LOCALE", "en_US.UTF-8")
 env.secret_key = conf.get("SECRET_KEY", "")
 env.nevercache_key = conf.get("NEVERCACHE_KEY", "")
 
+env.dj_settings = 'settings%s' % SETTINGS_ENV
+
 
 ##################
 # Template setup #
@@ -95,10 +97,6 @@ templates = {
     "settings": {
         "local_path": "deploy/local_settings.py.template",
         "remote_path": "%(proj_path)s/settings/local_settings.py",
-    },
-    "manage": {
-        "local_path": "deploy/manage.py.template",
-        "remote_path": "%(proj_path)s/manage.py",
     },
 }
 
@@ -335,7 +333,7 @@ def python(code, show=True):
     """
     Runs Python code in the project's virtual environment, with Django loaded.
     """
-    setup = "import os; os.environ[\'DJANGO_SETTINGS_MODULE\']=\'settings%(settings_env)s\';" % env
+    setup = "import os; os.environ[\'DJANGO_SETTINGS_MODULE\']=\'%(dj_settings)s\';" % env
     full_code = 'python -c "%s%s"' % (setup, code.replace("`", "\\\`"))
     with project():
         result = run(full_code, show=False)
@@ -357,7 +355,7 @@ def manage(command):
     """
     Runs a Django management command.
     """
-    return run("%s %s --settings=settings%s" % (env.manage, command, env.settings_env))
+    return run("%s %s --settings=%s" % (env.manage, command, env.dj_settings))
 
 
 #########################
@@ -513,6 +511,7 @@ def deploy():
     collect any new static assets, and restart gunicorn's work
     processes for the project.
     """
+
     if not exists(env.venv_path):
         prompt = input("\nVirtualenv doesn't exist: %s"
                        "\nWould you like to create it? (yes/no) "
@@ -521,6 +520,8 @@ def deploy():
             print("\nAborting!")
             return False
         create()
+
+    execute(prod_settings)
 
     for name in get_templates():
         upload_template_and_reload(name)
@@ -578,5 +579,5 @@ def all():
 
 
 @task
-def test():
-    upload_template_and_reload("gunicorn")
+def prod_settings():
+    put('./settings/prod.py', env.proj_path + '/settings')

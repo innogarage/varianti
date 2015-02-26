@@ -11,3 +11,4 @@ prod.py
 local_settings.py
 gunicorn.conf.py
 .idea/
+last.commit
